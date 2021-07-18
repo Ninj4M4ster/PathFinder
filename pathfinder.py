@@ -9,29 +9,30 @@ class MainWindow(QtWidgets.QWidget):
         self.setMinimumSize(1500, 800)
         self.setWindowTitle("Path Finding Visualisation")
 
-        self.containter = QtWidgets.QVBoxLayout(self)
+        self.container = QtWidgets.QVBoxLayout(self)
 
         self.titleLabel = QtWidgets.QLabel(self)
         self.titleLabel.setText("Welcome to path finding visualisation")
         self.titleLabel.setObjectName("titleLabel")
-        self.containter.addWidget(self.titleLabel, alignment=Qt.AlignmentFlag.AlignJustify)
         self.titleLabel.setMinimumSize(700, 70)
         self.titleLabel.setMaximumSize(900, 70)
         self.titleLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.container.addWidget(self.titleLabel, alignment=Qt.AlignmentFlag.AlignJustify)
 
-        self.descriptionLabelOne = QtWidgets.QLabel(self)
-        self.descriptionLabelOne.setText("Pick an algorithm from all available. \nSet start and end points, create\
+        self.descriptionLabel = QtWidgets.QLabel(self)
+        self.descriptionLabel.setText("Pick an algorithm from all available. \nSet start and end points, create\
 obstacles if you need them and run the code!")
-        self.containter.addWidget(self.descriptionLabelOne, alignment=Qt.AlignmentFlag.AlignJustify)
-        self.descriptionLabelOne.setMinimumSize(500, 50)
-        self.descriptionLabelOne.setMaximumSize(500, 50)
-        self.descriptionLabelOne.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.descriptionLabel.setMinimumSize(500, 50)
+        self.descriptionLabel.setMaximumSize(500, 50)
+        self.descriptionLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        self.container.addWidget(self.descriptionLabel, alignment=Qt.AlignmentFlag.AlignJustify)
 
 
         self.algorithms = QtWidgets.QLabel(self)
-        self.containter.addWidget(self.algorithms, alignment=Qt.AlignmentFlag.AlignJustify)
         self.algorithms.setMinimumSize(1000, 50)
         self.algorithms.setMaximumSize(1200, 50)
+
+        self.container.addWidget(self.algorithms, alignment=Qt.AlignmentFlag.AlignJustify)
 
         self.algorithmButtonsLayout = QtWidgets.QGridLayout(self.algorithms)
 
@@ -63,11 +64,40 @@ obstacles if you need them and run the code!")
         self.seventhAlgorithm.setText("Random Walk")
         self.algorithmButtonsLayout.addWidget(self.seventhAlgorithm, 0, 6)
 
+
+        self.centralLayout = QtWidgets.QHBoxLayout(self)
+
         self.centralWidget = QtWidgets.QLabel(self)
         self.centralWidget.setObjectName("central")
-        self.containter.addWidget(self.centralWidget, alignment=Qt.AlignmentFlag.AlignJustify)
         self.centralWidget.setMinimumSize(1055, 530)
         self.centralWidget.setMaximumSize(1055, 530)
+        self.centralLayout.addWidget(self.centralWidget)
+
+        self.optionsLayout = QtWidgets.QVBoxLayout(self)
+
+        self.startPoisitionButton = QtWidgets.QPushButton(self)
+        self.startPoisitionButton.setFixedSize(200, 40)
+        self.startPoisitionButton.setText("Start position")
+        self.optionsLayout.addWidget(self.startPoisitionButton)
+
+        self.endPositionButton = QtWidgets.QPushButton(self)
+        self.endPositionButton.setFixedSize(200, 40)
+        self.endPositionButton.setText("End position")
+        self.optionsLayout.addWidget(self.endPositionButton)
+
+        self.wallButton = QtWidgets.QPushButton(self)
+        self.wallButton.setFixedSize(200, 40)
+        self.wallButton.setText("Wall")
+        self.optionsLayout.addWidget(self.wallButton)
+
+        self.runCodeButton = QtWidgets.QPushButton(self)
+        self.runCodeButton.setFixedSize(200, 40)
+        self.runCodeButton.setText("Run code")
+        self.optionsLayout.addWidget(self.runCodeButton)
+
+        self.centralLayout.addLayout(self.optionsLayout)
+
+        self.container.addLayout(self.centralLayout)
 
         self.pathList = []
         for i in range(25):
@@ -76,7 +106,7 @@ obstacles if you need them and run the code!")
                 square = QtWidgets.QPushButton(self.centralWidget)
                 square.setMinimumSize(20, 20)
                 square.setMaximumSize(20, 20)
-                square.setObjectName(f"square {i} {j}")
+                square.setObjectName(f"square-{i}-{j}")
                 square.move(j*21 + 3, i*21 + 3)
                 square.clicked.connect(self.on_clicked)
                 tmpList.append(square)
@@ -117,7 +147,8 @@ obstacles if you need them and run the code!")
     def on_clicked(self):
         sender = self.sender()
         senderName = sender.objectName()
-        i, j = senderName.split()[1], senderName.split()[2]
+        i, j = senderName.split('-')[1], senderName.split('-')[2]
+        print(senderName)
         print(f"position: {i}, {j}")
 
 

@@ -93,9 +93,13 @@ obstacles if you need them and run the code!")
         # squares' icons QSize instance
         squareIconSize = QtCore.QSize(16, 16)
 
-        # icon in use and boolean for functions
+        # properties for path finding algotihm and program
         self.onlyOnePossible = True
         self.actualIcon = "start.png"
+        self.startI = -1
+        self.endI = -1
+        self.startJ = -1
+        self.endJ = -1
         # start position button
         self.startPositionButton = QtWidgets.QPushButton(self)
         self.startPositionButton.setFixedSize(200, 40)
@@ -110,6 +114,7 @@ obstacles if you need them and run the code!")
         self.endPositionButton = QtWidgets.QPushButton(self)
         self.endPositionButton.setFixedSize(200, 40)
         self.endPositionButton.setText("End position")
+        self.endPositionButton.clicked.connect(self.setEndPosition)
         self.optionsLayout.addWidget(self.endPositionButton)
         # wall button
         self.wallButton = QtWidgets.QPushButton(self)
@@ -181,11 +186,25 @@ obstacles if you need them and run the code!")
             self.clearPreviousStartPosition()
             sender.setIcon(usedIcon)
             sender.setAccessibleName("start")
+        elif self.actualIcon == "end.png":
+            self.endI = i
+            self.endJ = j
+            self.clearPreviousEndPosition()
+            sender.setAccessibleName("end")
+
 
     def clearPreviousStartPosition(self):
         for row in self.pathList:
             for square in row:
                 if square.accessibleName() == "start":
+                    square.setIcon(QtGui.QIcon(''))
+                    square.setAccessibleName('')
+                    return
+
+    def clearPreviousEndPosition(self):
+        for row in self.pathList:
+            for square in row:
+                if square.accessibleName() == 'end':
                     square.setIcon(QtGui.QIcon(''))
                     square.setAccessibleName('')
                     return
@@ -198,6 +217,14 @@ obstacles if you need them and run the code!")
         self.startPositionButton.setDisabled(True)
         self.actualIcon = "start.png"
         self.onlyOnePossible = True
+
+    def setEndPosition(self):
+        if self.startPositionButton.isEnabled():
+            self.wallButton.setEnabled(True)
+        else:
+            self.startPositionButton.setEnabled(True)
+        self.endPositionButton.setDisabled(True)
+        self.actualIcon = "end.png"
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

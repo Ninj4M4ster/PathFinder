@@ -89,7 +89,7 @@ obstacles if you need them and run the code!")
         self.optionsLayout = QtWidgets.QVBoxLayout(self.optionsLabel)
 
         # buttons' icons QSize instance
-        buttonIconSize = QtCore.QSize(35, 35)
+        buttonIconSize = QtCore.QSize(32, 32)
         # squares' icons QSize instance
         squareIconSize = QtCore.QSize(16, 16)
 
@@ -114,6 +114,9 @@ obstacles if you need them and run the code!")
         self.endPositionButton = QtWidgets.QPushButton(self)
         self.endPositionButton.setFixedSize(200, 40)
         self.endPositionButton.setText("End position")
+        endPositionIcon = QtGui.QIcon("end.png")
+        self.endPositionButton.setIcon(endPositionIcon)
+        self.endPositionButton.setIconSize(buttonIconSize)
         self.endPositionButton.clicked.connect(self.setEndPosition)
         self.optionsLayout.addWidget(self.endPositionButton)
         # wall button
@@ -189,7 +192,9 @@ obstacles if you need them and run the code!")
         elif self.actualIcon == "end.png":
             self.endI = i
             self.endJ = j
+            usedIcon = QtGui.QIcon(self.actualIcon)
             self.clearPreviousEndPosition()
+            sender.setIcon(usedIcon)
             sender.setAccessibleName("end")
 
 

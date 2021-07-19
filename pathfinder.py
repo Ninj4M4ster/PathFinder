@@ -100,6 +100,8 @@ obstacles if you need them and run the code!")
         self.endI = -1
         self.startJ = -1
         self.endJ = -1
+        self.blackSquareStr = "background-color:black;"
+        self.whiteSquareStr = "background-color:white;"
         # start position button
         self.startPositionButton = QtWidgets.QPushButton(self)
         self.startPositionButton.setFixedSize(200, 40)
@@ -123,6 +125,7 @@ obstacles if you need them and run the code!")
         self.wallButton = QtWidgets.QPushButton(self)
         self.wallButton.setFixedSize(200, 40)
         self.wallButton.setText("Wall")
+        self.wallButton.clicked.connect(self.setWall)
         self.optionsLayout.addWidget(self.wallButton)
         # code starting button
         self.runCodeButton = QtWidgets.QPushButton(self)
@@ -196,6 +199,12 @@ obstacles if you need them and run the code!")
             self.clearPreviousEndPosition()
             sender.setIcon(usedIcon)
             sender.setAccessibleName("end")
+        else:
+            if sender.styleSheet() == self.whiteSquareStr or sender.styleSheet() == '':
+                sender.setStyleSheet(self.blackSquareStr)
+            else:
+                sender.setStyleSheet(self.whiteSquareStr)
+
 
 
     def clearPreviousStartPosition(self):
@@ -230,6 +239,14 @@ obstacles if you need them and run the code!")
             self.startPositionButton.setEnabled(True)
         self.endPositionButton.setDisabled(True)
         self.actualIcon = "end.png"
+
+    def setWall(self):
+        if self.startPositionButton.isEnabled():
+            self.endPositionButton.setEnabled(True)
+        else:
+            self.startPositionButton.setEnabled(True)
+        self.wallButton.setDisabled(True)
+        self.actualIcon = ''
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

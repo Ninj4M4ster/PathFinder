@@ -88,11 +88,24 @@ obstacles if you need them and run the code!")
         # layout for options
         self.optionsLayout = QtWidgets.QVBoxLayout(self.optionsLabel)
 
+        # buttons' icons QSize instance
+        buttonIconSize = QtCore.QSize(35, 35)
+        # squares' icons QSize instance
+        squareIconSize = QtCore.QSize(16, 16)
+
+        # icon in use and boolean for functions
+        self.onlyOnePossible = True
+        self.actualIcon = "start.png"
         # start position button
         self.startPositionButton = QtWidgets.QPushButton(self)
         self.startPositionButton.setFixedSize(200, 40)
         self.startPositionButton.setText("Start position")
-        self.optionsLayout.addWidget(self.startPoisitionButton)
+        startPositionIcon = QtGui.QIcon("start.png")
+        self.startPositionButton.setIcon(startPositionIcon)
+        self.startPositionButton.setIconSize(buttonIconSize)
+        self.startPositionButton.clicked.connect(self.setStartPosition)
+        self.startPositionButton.setDisabled(True)
+        self.optionsLayout.addWidget(self.startPositionButton)
         # end position button
         self.endPositionButton = QtWidgets.QPushButton(self)
         self.endPositionButton.setFixedSize(200, 40)
@@ -123,8 +136,10 @@ obstacles if you need them and run the code!")
                 square.setMinimumSize(20, 20)
                 square.setMaximumSize(20, 20)
                 square.setObjectName(f"square-{i}-{j}")
+                square.setAccessibleName('')
                 square.move(j*21 + 3, i*21 + 3)
                 square.clicked.connect(self.on_clicked)
+                square.setIconSize(squareIconSize)
                 tmpList.append(square)
             self.pathList.append(tmpList)
 
@@ -152,9 +167,6 @@ obstacles if you need them and run the code!")
                 border-radius:2px;
                 widget-animation-duration: 100;
             }
-            QLabel#central QPushButton:hover{
-                background-color:black;  
-            }
         """
         self.setStyleSheet(stylesheetstr)
 
@@ -162,9 +174,30 @@ obstacles if you need them and run the code!")
         sender = self.sender()
         senderName = sender.objectName()
         i, j = senderName.split('-')[1], senderName.split('-')[2]
-        print(senderName)
-        print(f"position: {i}, {j}")
+        if self.actualIcon == 'start.png':
+            self.startI = i
+            self.startJ = j
+            usedIcon = QtGui.QIcon(self.actualIcon)
+            self.clearPreviousStartPosition()
+            sender.setIcon(usedIcon)
+            sender.setAccessibleName("start")
 
+    def clearPreviousStartPosition(self):
+        for row in self.pathList:
+            for square in row:
+                if square.accessibleName() == "start":
+                    square.setIcon(QtGui.QIcon(''))
+                    square.setAccessibleName('')
+                    return
+
+    def setStartPosition(self):
+        if self.endPositionButton.isEnabled():
+            self.wallButton.setEnabled(True)
+        else:
+            self.endPositionButton.setEnabled(True)
+        self.startPositionButton.setDisabled(True)
+        self.actualIcon = "start.png"
+        self.onlyOnePossible = True
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

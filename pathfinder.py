@@ -149,7 +149,7 @@ obstacles if you need them and run the code!")
                 square.setObjectName(f"square-{i}-{j}")
                 square.setAccessibleName('')
                 square.move(j*21 + 3, i*21 + 3)
-                square.clicked.connect(self.on_clicked)
+                square.clicked.connect(self.squareClicked)
                 square.setIconSize(squareIconSize)
                 tmpList.append(square)
             self.pathList.append(tmpList)
@@ -181,11 +181,13 @@ obstacles if you need them and run the code!")
         """
         self.setStyleSheet(stylesheetstr)
 
-    def on_clicked(self):
+    def squareClicked(self):
         sender = self.sender()
         senderName = sender.objectName()
         i, j = senderName.split('-')[1], senderName.split('-')[2]
         if self.actualIcon == 'start.png':
+            if i == self.endI and j == self.endJ or sender.styleSheet() == self.blackSquareStr:
+                return
             self.startI = i
             self.startJ = j
             usedIcon = QtGui.QIcon(self.actualIcon)
@@ -193,6 +195,8 @@ obstacles if you need them and run the code!")
             sender.setIcon(usedIcon)
             sender.setAccessibleName("start")
         elif self.actualIcon == "end.png":
+            if i == self.startI and j == self.startJ or sender.styleSheet() == self.blackSquareStr:
+                return
             self.endI = i
             self.endJ = j
             usedIcon = QtGui.QIcon(self.actualIcon)
@@ -200,7 +204,9 @@ obstacles if you need them and run the code!")
             sender.setIcon(usedIcon)
             sender.setAccessibleName("end")
         else:
-            if sender.styleSheet() == self.whiteSquareStr or sender.styleSheet() == '':
+            if i == self.startI and j == self.startJ or i == self.endI and j == self.endJ:
+                return
+            elif sender.styleSheet() == self.whiteSquareStr or sender.styleSheet() == '':
                 sender.setStyleSheet(self.blackSquareStr)
             else:
                 sender.setStyleSheet(self.whiteSquareStr)

@@ -1,5 +1,6 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 from PyQt6.QtCore import Qt
+from controller import PathfinderController
 import sys
 
 class MainWindow(QtWidgets.QWidget):
@@ -94,7 +95,6 @@ obstacles if you need them and run the code!")
         squareIconSize = QtCore.QSize(16, 16)
 
         # properties for path finding algotihm and program
-        self.onlyOnePossible = True
         self.actualIcon = "start.png"
         self.startI = -1
         self.endI = -1
@@ -109,7 +109,6 @@ obstacles if you need them and run the code!")
         startPositionIcon = QtGui.QIcon("start.png")
         self.startPositionButton.setIcon(startPositionIcon)
         self.startPositionButton.setIconSize(buttonIconSize)
-        self.startPositionButton.clicked.connect(self.setStartPosition)
         self.startPositionButton.setDisabled(True)
         self.optionsLayout.addWidget(self.startPositionButton)
         # end position button
@@ -119,13 +118,11 @@ obstacles if you need them and run the code!")
         endPositionIcon = QtGui.QIcon("end.png")
         self.endPositionButton.setIcon(endPositionIcon)
         self.endPositionButton.setIconSize(buttonIconSize)
-        self.endPositionButton.clicked.connect(self.setEndPosition)
         self.optionsLayout.addWidget(self.endPositionButton)
         # wall button
         self.wallButton = QtWidgets.QPushButton(self)
         self.wallButton.setFixedSize(200, 40)
         self.wallButton.setText("Wall")
-        self.wallButton.clicked.connect(self.setWall)
         self.optionsLayout.addWidget(self.wallButton)
         # code starting button
         self.runCodeButton = QtWidgets.QPushButton(self)
@@ -149,7 +146,6 @@ obstacles if you need them and run the code!")
                 square.setObjectName(f"square-{i}-{j}")
                 square.setAccessibleName('')
                 square.move(j*21 + 3, i*21 + 3)
-                square.clicked.connect(self.squareClicked)
                 square.setIconSize(squareIconSize)
                 tmpList.append(square)
             self.pathList.append(tmpList)
@@ -181,83 +177,11 @@ obstacles if you need them and run the code!")
         """
         self.setStyleSheet(stylesheetstr)
 
-    def squareClicked(self):
-        sender = self.sender()
-        senderName = sender.objectName()
-        i, j = senderName.split('-')[1], senderName.split('-')[2]
-        if self.actualIcon == 'start.png':
-            if i == self.endI and j == self.endJ or sender.styleSheet() == self.blackSquareStr:
-                return
-            self.startI = i
-            self.startJ = j
-            usedIcon = QtGui.QIcon(self.actualIcon)
-            self.clearPreviousStartPosition()
-            sender.setIcon(usedIcon)
-            sender.setAccessibleName("start")
-        elif self.actualIcon == "end.png":
-            if i == self.startI and j == self.startJ or sender.styleSheet() == self.blackSquareStr:
-                return
-            self.endI = i
-            self.endJ = j
-            usedIcon = QtGui.QIcon(self.actualIcon)
-            self.clearPreviousEndPosition()
-            sender.setIcon(usedIcon)
-            sender.setAccessibleName("end")
-        else:
-            if i == self.startI and j == self.startJ or i == self.endI and j == self.endJ:
-                return
-            elif sender.styleSheet() == self.whiteSquareStr or sender.styleSheet() == '':
-                sender.setStyleSheet(self.blackSquareStr)
-            else:
-                sender.setStyleSheet(self.whiteSquareStr)
-
-
-
-    def clearPreviousStartPosition(self):
-        for row in self.pathList:
-            for square in row:
-                if square.accessibleName() == "start":
-                    square.setIcon(QtGui.QIcon(''))
-                    square.setAccessibleName('')
-                    return
-
-    def clearPreviousEndPosition(self):
-        for row in self.pathList:
-            for square in row:
-                if square.accessibleName() == 'end':
-                    square.setIcon(QtGui.QIcon(''))
-                    square.setAccessibleName('')
-                    return
-
-    def setStartPosition(self):
-        if self.endPositionButton.isEnabled():
-            self.wallButton.setEnabled(True)
-        else:
-            self.endPositionButton.setEnabled(True)
-        self.startPositionButton.setDisabled(True)
-        self.actualIcon = "start.png"
-        self.onlyOnePossible = True
-
-    def setEndPosition(self):
-        if self.startPositionButton.isEnabled():
-            self.wallButton.setEnabled(True)
-        else:
-            self.startPositionButton.setEnabled(True)
-        self.endPositionButton.setDisabled(True)
-        self.actualIcon = "end.png"
-
-    def setWall(self):
-        if self.startPositionButton.isEnabled():
-            self.endPositionButton.setEnabled(True)
-        else:
-            self.startPositionButton.setEnabled(True)
-        self.wallButton.setDisabled(True)
-        self.actualIcon = ''
-
 def main():
     app = QtWidgets.QApplication(sys.argv)
-    widget = MainWindow()
-    widget.show()
+    view = MainWindow()
+    controller = PathfinderController(view=view)
+    view.show()
     app.exec()
 
 if __name__ == '__main__':

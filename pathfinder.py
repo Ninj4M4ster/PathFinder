@@ -1,6 +1,7 @@
 from PyQt6 import QtWidgets, QtCore, QtGui
 from PyQt6.QtCore import Qt
 from controller import PathfinderController
+from model import PathFinderModel
 import sys
 
 class MainWindow(QtWidgets.QWidget):
@@ -180,7 +181,8 @@ obstacles if you need them and run the code!")
 def main():
     app = QtWidgets.QApplication(sys.argv)
     view = MainWindow()
-    controller = PathfinderController(view=view)
+    model = PathFinderModel()
+    controller = PathfinderController(view=view, model=model)
     view.show()
     app.exec()
 

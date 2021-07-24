@@ -1,8 +1,11 @@
 from PyQt6 import QtGui
 
+
 class PathfinderController:
-    def __init__(self, view):
+    def __init__(self, view, model):
         self._view = view
+        self._model = model
+        self.algorithm = self._model.dijkstraShortestPath
         # Connect signals and slots
         self._connectSignals()
 
@@ -11,7 +14,7 @@ class PathfinderController:
         self._view.startPositionButton.clicked.connect(self.setStartPosition)
         self._view.endPositionButton.clicked.connect(self.setEndPosition)
         self._view.wallButton.clicked.connect(self.setWall)
-        # self._view.runCodeButton.clicked.connect()
+        self._view.runCodeButton.clicked.connect(self.runCode)
 
         # connecting squares
         for row in self._view.pathList:
@@ -87,3 +90,8 @@ class PathfinderController:
             self._view.startPositionButton.setEnabled(True)
         self._view.wallButton.setDisabled(True)
         self._view.actualIcon = ''
+
+    def runCode(self):
+        self.algorithm(start=(self._view.startI, self._view.startJ),
+                       end=(self._view.endI, self._view.endJ),
+                       scope=self._view.pathList)

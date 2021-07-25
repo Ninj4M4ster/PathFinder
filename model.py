@@ -7,8 +7,16 @@ class PathFinderModel(QtCore.QObject):
 
     def __init__(self):
         super(PathFinderModel, self).__init__()
+        self.clearSquareStr = 'background-color:white;'
         self.checkedStr = 'background-color:purple;'
         self.pathStr = 'background-color:yellow;'
+
+    def clearScope(self, scope):
+        for row in scope:
+            for square in row:
+                if square.styleSheet() != 'background-color:black;':
+                    i, j = int(square.objectName().split('-')[1]), int(square.objectName().split('-')[2])
+                    self.colorChange.emit(i, j, self.clearSquareStr)
 
     def dijkstraShortestPath(self, start, end, scope):
         parentDict = {}

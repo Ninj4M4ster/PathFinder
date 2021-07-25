@@ -47,7 +47,7 @@ obstacles if you need them and run the code!")
 
         # Shortest path algorithm's button
         self.firstAlgorithm = QtWidgets.QPushButton(self.algorithms)
-        self.firstAlgorithm.setText("Shortest Path")
+        self.firstAlgorithm.setText("Dijkstra\'s Shortest Path")
         self.algorithmButtonsLayout.addWidget(self.firstAlgorithm, 0, 0)
         # A* algorithm's button
         self.secondAlgorithm = QtWidgets.QPushButton(self.algorithms)
@@ -55,7 +55,7 @@ obstacles if you need them and run the code!")
         self.algorithmButtonsLayout.addWidget(self.secondAlgorithm, 0, 1)
         # Yen's k-Shortest Paths algorithm's button
         self.thirdAlgorithm = QtWidgets.QPushButton(self.algorithms)
-        self.thirdAlgorithm.setText("Yen’s k-Shortest Paths")
+        self.thirdAlgorithm.setText("Yen\'s k-Shortest Paths")
         self.algorithmButtonsLayout.addWidget(self.thirdAlgorithm, 0, 2)
         # All-Pairs Shortest Path algorithm's button
         self.fourthAlgorithm = QtWidgets.QPushButton(self.algorithms)

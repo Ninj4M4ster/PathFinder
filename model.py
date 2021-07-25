@@ -3,10 +3,10 @@ import time
 
 
 class PathFinderModel(QtCore.QObject):
+    colorChange = QtCore.pyqtSignal(int, int, str)
 
     def __init__(self):
         super(PathFinderModel, self).__init__()
-        self.beforeCheckStr = 'background-color:orange;'
         self.checkedStr = 'background-color:purple;'
         self.pathStr = 'background-color:yellow;'
 
@@ -20,7 +20,7 @@ class PathFinderModel(QtCore.QObject):
                 alreadyChecked[(i, j)] = False
         alreadyChecked[(int(start[0]), int(start[1]))] = True
         recentlyChecked = [(int(start[0]), int(start[1]))]
-        scope[int(start[0])][int(start[1])].setStyleSheet(self.checkedStr)
+        self.colorChange.emit(int(start[0]), int(start[1]), self.checkedStr)
         while True:
             toBeChecked = []
             if not recentlyChecked:
@@ -45,9 +45,11 @@ class PathFinderModel(QtCore.QObject):
                         lastI, lastJ = parentDict[(lastI, lastJ)]
                         shortestPath.append((lastI, lastJ))
                     for square in reversed(shortestPath):
-                        scope[square[0]][square[1]].setStyleSheet(self.pathStr)
+                        time.sleep(0.01)
+                        self.colorChange.emit(square[0], square[1], self.pathStr)
                     return
+            time.sleep(0.05)
             recentlyChecked = []
             for square in toBeChecked:
                 recentlyChecked.append(square)
-                scope[square[0]][square[1]].setStyleSheet(self.checkedStr)
+                self.colorChange.emit(square[0], square[1], self.checkedStr)

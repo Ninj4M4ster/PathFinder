@@ -18,6 +18,7 @@ class PathfinderController(QtCore.QObject):
         self._view.endPositionButton.clicked.connect(self.setEndPosition)
         self._view.wallButton.clicked.connect(self.setWall)
         self._view.runCodeButton.clicked.connect(self.runCode)
+        self._model.colorChange.connect(self.changeSquareColor)
 
         # connecting squares
         for row in self._view.pathList:
@@ -76,6 +77,8 @@ class PathfinderController(QtCore.QObject):
                 if square.styleSheet() != 'background-color:black;':
                     square.setStyleSheet('background-color:white;')
 
+    def changeSquareColor(self, i, j, color):
+        self._view.pathList[i][j].setStyleSheet(color)
 
     def setStartPosition(self):
         if self._view.endPositionButton.isEnabled():
@@ -113,10 +116,7 @@ class PathfinderController(QtCore.QObject):
         self._view.startPositionButton.setDisabled(True)
         self._view.endPositionButton.setDisabled(True)
         self._view.endPositionButton.setDisabled(True)
-        try:
-            worker.signals.finished.connect(partial(self._view.runCodeButton.setEnabled, True))
-        except Exception as e:
-            print(e.args)
+        worker.signals.finished.connect(partial(self._view.runCodeButton.setEnabled, True))
         if self._view.actualIcon == 'start.png':
             worker.signals.finished.connect(partial(self._view.endPositionButton.setEnabled, True))
             worker.signals.finished.connect(partial(self._view.wallButton.setEnabled, True))

@@ -103,6 +103,7 @@ obstacles if you need them and run the code!")
         self.endJ = -1
         self.blackSquareStr = "background-color:black;"
         self.whiteSquareStr = "background-color:white;"
+        self.scopeToClear = False
         # start position button
         self.startPositionButton = QtWidgets.QPushButton(self)
         self.startPositionButton.setFixedSize(200, 40)
@@ -177,6 +178,10 @@ obstacles if you need them and run the code!")
             }
         """
         self.setStyleSheet(stylesheetstr)
+
+        # threadpool
+        self.threadPool = QtCore.QThreadPool()
+
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

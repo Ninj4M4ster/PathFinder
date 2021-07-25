@@ -1,11 +1,14 @@
-from PyQt6 import QtGui
+from PyQt6 import QtGui, QtCore
+from functools import partial
+from worker import Worker
 
 
-class PathfinderController:
+class PathfinderController(QtCore.QObject):
     def __init__(self, view, model):
+        super().__init__()
         self._view = view
         self._model = model
-        self.algorithm = self._model.dijkstraShortestPath
+        self.algorithm = 'dijkstra'
         # Connect signals and slots
         self._connectSignals()
 
@@ -67,6 +70,13 @@ class PathfinderController:
                     square.setAccessibleName('')
                     return
 
+    def clearScope(self):
+        for row in self._view.pathList:
+            for square in row:
+                if square.styleSheet() != 'background-color:black;':
+                    square.setStyleSheet('background-color:white;')
+
+
     def setStartPosition(self):
         if self._view.endPositionButton.isEnabled():
             self._view.wallButton.setEnabled(True)
@@ -92,6 +102,29 @@ class PathfinderController:
         self._view.actualIcon = ''
 
     def runCode(self):
-        self.algorithm(start=(self._view.startI, self._view.startJ),
-                       end=(self._view.endI, self._view.endJ),
-                       scope=self._view.pathList)
+        # choose algorithm and pass it to worker class
+        if self.algorithm == 'dijkstra':
+            worker = Worker(self._model.dijkstraShortestPath,
+                            (self._view.startI, self._view.startJ),
+                            (self._view.endI, self._view.endJ),
+                            self._view.pathList)
+        # buttons resets
+        self._view.runCodeButton.setDisabled(True)
+        self._view.startPositionButton.setDisabled(True)
+        self._view.endPositionButton.setDisabled(True)
+        self._view.endPositionButton.setDisabled(True)
+        try:
+            worker.signals.finished.connect(partial(self._view.runCodeButton.setEnabled, True))
+        except Exception as e:
+            print(e.args)
+        if self._view.actualIcon == 'start.png':
+            worker.signals.finished.connect(partial(self._view.endPositionButton.setEnabled, True))
+            worker.signals.finished.connect(partial(self._view.wallButton.setEnabled, True))
+        elif self._view.actualIcon == 'end.png':
+            worker.signals.finished.connect(partial(self._view.startPositionButton.setEnabled, True))
+            worker.signals.finished.connect(partial(self._view.wallButton.setEnabled, True))
+        else:
+            worker.signals.finished.connect(partial(self._view.startPositionButton.setEnabled, True))
+            worker.signals.finished.connect(partial(self._view.endPositionButton.setEnabled, True))
+        self._view.scopeToClear = True
+        self._view.threadPool.start(worker)

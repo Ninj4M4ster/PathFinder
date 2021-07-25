@@ -1,10 +1,11 @@
-import math
+from PyQt6 import QtCore
 import time
 
 
-class PathFinderModel:
+class PathFinderModel(QtCore.QObject):
 
     def __init__(self):
+        super(PathFinderModel, self).__init__()
         self.beforeCheckStr = 'background-color:orange;'
         self.checkedStr = 'background-color:purple;'
         self.pathStr = 'background-color:yellow;'
@@ -13,17 +14,13 @@ class PathFinderModel:
         parentDict = {}
         shortestPath = []
         alreadyChecked = {}
-        values = {}
         for row in scope:
             for square in row:
                 i, j = int(square.objectName().split('-')[1]), int(square.objectName().split('-')[2])
-                values[(i, j)] = math.inf
                 alreadyChecked[(i, j)] = False
-        values[(int(start[0]), int(start[1]))] = 0
         alreadyChecked[(int(start[0]), int(start[1]))] = True
         recentlyChecked = [(int(start[0]), int(start[1]))]
         scope[int(start[0])][int(start[1])].setStyleSheet(self.checkedStr)
-        time.sleep(0.01)
         while True:
             toBeChecked = []
             if not recentlyChecked:
@@ -37,8 +34,6 @@ class PathFinderModel:
                     if 0 <= square[0] <= 24 and 0 <= square[1] <= 49:
                         if not alreadyChecked[(square[0], square[1])] \
                                 and scope[square[0]][square[1]].styleSheet() != "background-color:black;":
-                            scope[square[0]][square[1]].setStyleSheet(self.beforeCheckStr)
-                            time.sleep(0.01)
                             toBeChecked.append((square[0], square[1]))
                             parentDict[(square[0], square[1])] = (position[0], position[1])
                             alreadyChecked[(square[0], square[1])] = True
@@ -51,11 +46,8 @@ class PathFinderModel:
                         shortestPath.append((lastI, lastJ))
                     for square in reversed(shortestPath):
                         scope[square[0]][square[1]].setStyleSheet(self.pathStr)
-                        time.sleep(0.01)
                     return
-
             recentlyChecked = []
             for square in toBeChecked:
                 recentlyChecked.append(square)
                 scope[square[0]][square[1]].setStyleSheet(self.checkedStr)
-                time.sleep(0.01)

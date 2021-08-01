@@ -4,6 +4,7 @@ from controller import PathfinderController
 from model import PathFinderModel
 import sys
 
+# main application class
 class MainWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
@@ -142,11 +143,7 @@ obstacles if you need them and run the code!")
         for i in range(25):
             tmpList = []
             for j in range(50):
-                square = QtWidgets.QPushButton(self.centralWidget)
-                square.setMinimumSize(20, 20)
-                square.setMaximumSize(20, 20)
-                square.setObjectName(f"square-{i}-{j}")
-                square.setAccessibleName('')
+                square = Square(self.centralWidget, i, j)
                 square.move(j*21 + 3, i*21 + 3)
                 square.setIconSize(squareIconSize)
                 tmpList.append(square)
@@ -169,8 +166,6 @@ obstacles if you need them and run the code!")
             }
             QLabel#central QPushButton{
                 background-color:white;
-                width:10px;
-                height:20px;
                 transition: 0.5s;
                 border: 1px solid grey;
                 border-radius:2px;
@@ -182,6 +177,18 @@ obstacles if you need them and run the code!")
         # threadpool
         self.threadPool = QtCore.QThreadPool()
 
+
+# square class
+class Square(QtWidgets.QPushButton):
+    def __init__(self, parent, i, j):
+        super(Square, self).__init__(parent)
+        self.setFixedSize(20, 20)
+        self.setObjectName(f"square-{i}-{j}")
+        self.setAccessibleName('')
+
+    def changeToWhite(self):
+        if self.styleSheet() != 'background-color:black;':
+            self.setStyleSheet('background-color:white;')
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

@@ -24,10 +24,12 @@ class PathfinderController(QtCore.QObject):
         for row in self._view.pathList:
             for square in row:
                 square.clicked.connect(self.squareClicked)
+                self._model.clearSquares.connect(square.changeToWhite)
 
     def squareClicked(self):
         if self._view.scopeToClear:
-            worker = Worker(self._model.clearScope, self._view.pathList)
+            worker = Worker(self._model.clearScope)
+            self._model.clearScope()
             self._view.scopeToClear = False
             self._view.threadPool.start(worker)
         sender = self._view.sender()

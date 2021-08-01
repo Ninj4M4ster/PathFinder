@@ -4,6 +4,7 @@ import time
 
 class PathFinderModel(QtCore.QObject):
     colorChange = QtCore.pyqtSignal(int, int, str)
+    clearSquares = QtCore.pyqtSignal()
 
     def __init__(self):
         super(PathFinderModel, self).__init__()
@@ -11,12 +12,8 @@ class PathFinderModel(QtCore.QObject):
         self.checkedStr = 'background-color:purple;'
         self.pathStr = 'background-color:yellow;'
 
-    def clearScope(self, scope):
-        for row in scope:
-            for square in row:
-                if square.styleSheet() != 'background-color:black;':
-                    i, j = int(square.objectName().split('-')[1]), int(square.objectName().split('-')[2])
-                    self.colorChange.emit(i, j, self.clearSquareStr)
+    def clearScope(self):
+        self.clearSquares.emit()
 
     def dijkstraShortestPath(self, start, end, scope):
         parentDict = {}

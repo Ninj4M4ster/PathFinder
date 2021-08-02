@@ -29,7 +29,6 @@ class PathfinderController(QtCore.QObject):
     def squareClicked(self):
         if self._view.scopeToClear:
             worker = Worker(self._model.clearScope)
-            self._model.clearScope()
             self._view.scopeToClear = False
             self._view.threadPool.start(worker)
         sender = self._view.sender()
@@ -105,8 +104,9 @@ class PathfinderController(QtCore.QObject):
         self._view.actualIcon = ''
 
     def runCode(self):
+        # clear scope before running algorithm
         if self._view.scopeToClear:
-            worker = Worker(self._model.clearScope, self._view.pathList)
+            worker = Worker(self._model.clearScope)
             self._view.scopeToClear = False
             worker.signals.finished.connect(self.runCode)
             self._view.threadPool.start(worker)

@@ -9,8 +9,8 @@ class MainWindow(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
         # main window properties
-        self.setGeometry(100, 100, 1500, 800)
-        self.setMinimumSize(1500, 800)
+        self.setGeometry(50, 50, 1600, 900)
+        self.setMinimumSize(1600, 900)
         self.setWindowTitle("Path Finding Visualisation")
 
         # main window layout
@@ -78,13 +78,22 @@ obstacles if you need them and run the code!")
         # layout for main content
         self.centralLayout = QtWidgets.QHBoxLayout(self)
 
+        # pathfinder label
+        self.pathfinderLabel = QtWidgets.QLabel()
+        self.pathfinderLabel.setFixedSize(1075, 600)
+        # layout for path finder and settings
+        self.pathfinderLayout = QtWidgets.QVBoxLayout()
+        self.pathfinderLabel.setLayout(self.pathfinderLayout)
         # field for path finding
         self.centralWidget = QtWidgets.QLabel(self)
         self.centralWidget.setObjectName("central")
         self.centralWidget.setMinimumSize(1055, 530)
         self.centralWidget.setMaximumSize(1055, 530)
+        self.pathfinderLayout.addWidget(self.centralWidget)
+        # settings for path finding
+        self._createSettingsWidget()
         # adding field to main content's layout
-        self.centralLayout.addWidget(self.centralWidget)
+        self.centralLayout.addWidget(self.pathfinderLabel)
         # label for options used with path finding
         self.optionsLabel = QtWidgets.QLabel(self)
         self.optionsLabel.setFixedSize(300, 530)
@@ -151,6 +160,9 @@ obstacles if you need them and run the code!")
 
         # stylesheet
         stylesheetstr = """
+            #settings{
+                background-color:yellow;
+            }
             QLabel{
                 background-color: red;
             }
@@ -171,11 +183,23 @@ obstacles if you need them and run the code!")
                 border-radius:2px;
                 widget-animation-duration: 100;
             }
+            
         """
         self.setStyleSheet(stylesheetstr)
 
         # threadpool
         self.threadPool = QtCore.QThreadPool()
+
+    def _createSettingsWidget(self):
+        # settings container
+        self.settingsLabel = QtWidgets.QLabel(self)
+        self.settingsLabel.setAccessibleName('settings')
+        self.settingsLabel.setFixedSize(1055, 40)
+        self.pathfinderLayout.addWidget(self.settingsLabel)
+
+        self.clearButton = QtWidgets.QPushButton(self.settingsLabel)
+        self.clearButton.setFixedSize(150, 40)
+        self.clearButton.setText("Clear all")
 
 
 # square class

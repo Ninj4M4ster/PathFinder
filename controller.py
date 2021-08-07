@@ -124,7 +124,9 @@ class PathfinderController(QtCore.QObject):
             self._view.startPositionButton.setDisabled(True)
             self._view.endPositionButton.setDisabled(True)
             self._view.wallButton.setDisabled(True)
+            self._view.clearButton.setDisabled(True)
             worker.signals.finished.connect(partial(self._view.runCodeButton.setEnabled, True))
+            worker.signals.finished.connect(partial(self._view.clearButton.setEnabled, True))
             if self._view.actualIcon == 'start.png':
                 worker.signals.finished.connect(partial(self._view.endPositionButton.setEnabled, True))
                 worker.signals.finished.connect(partial(self._view.wallButton.setEnabled, True))

@@ -216,10 +216,10 @@ class Square(QtWidgets.QPushButton):
         self.setObjectName(f"square-{i}-{j}")
         self.setAccessibleName('')
 
-    def changeToWhite(self, leaveBlack=True):
+    def changeToWhite(self, leaveBlack):
         if self.styleSheet() != 'background-color:black;' and leaveBlack:
             self.setStyleSheet('background-color:white;')
-        else:
+        elif not leaveBlack:
             self.setStyleSheet('background-color:white;')
             self.setAccessibleName('')
             self.setIcon(QtGui.QIcon(''))

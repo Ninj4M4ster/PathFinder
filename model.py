@@ -14,7 +14,7 @@ class PathFinderModel(QtCore.QObject):
         self.pathStr = 'background-color:yellow;'
 
     def clearScope(self):
-        self.clearSquares.emit()
+        self.clearSquares.emit(True)
 
     def clearAll(self):
         self.clearSquares.emit(False)

@@ -18,7 +18,9 @@ class PathfinderController(QtCore.QObject):
         self._view.endPositionButton.clicked.connect(self.setEndPosition)
         self._view.wallButton.clicked.connect(self.setWall)
         self._view.runCodeButton.clicked.connect(self.runCode)
+        self._view.clearButton.clicked.connect(self.clearScope)
         self._model.colorChange.connect(self.changeSquareColor)
+        self._model.resetPoints.connect(self._view.resetPoints)
 
         # connecting squares
         for row in self._view.pathList:
@@ -134,3 +136,7 @@ class PathfinderController(QtCore.QObject):
                 worker.signals.finished.connect(partial(self._view.endPositionButton.setEnabled, True))
             self._view.scopeToClear = True
             self._view.threadPool.start(worker)
+
+    def clearScope(self):
+        worker = Worker(self._model.clearAll)
+        self._view.threadPool.start(worker)

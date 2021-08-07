@@ -201,6 +201,12 @@ obstacles if you need them and run the code!")
         self.clearButton.setFixedSize(150, 40)
         self.clearButton.setText("Clear all")
 
+    def resetPoints(self):
+        self.scopeToClear = False
+        self.startI = -1
+        self.startJ = -1
+        self.endI = -1
+        self.endJ = -1
 
 # square class
 class Square(QtWidgets.QPushButton):
@@ -210,9 +216,13 @@ class Square(QtWidgets.QPushButton):
         self.setObjectName(f"square-{i}-{j}")
         self.setAccessibleName('')
 
-    def changeToWhite(self):
-        if self.styleSheet() != 'background-color:black;':
+    def changeToWhite(self, leaveBlack=True):
+        if self.styleSheet() != 'background-color:black;' and leaveBlack:
             self.setStyleSheet('background-color:white;')
+        else:
+            self.setStyleSheet('background-color:white;')
+            self.setAccessibleName('')
+            self.setIcon(QtGui.QIcon(''))
 
 def main():
     app = QtWidgets.QApplication(sys.argv)

@@ -4,7 +4,8 @@ import time
 
 class PathFinderModel(QtCore.QObject):
     colorChange = QtCore.pyqtSignal(int, int, str)
-    clearSquares = QtCore.pyqtSignal()
+    clearSquares = QtCore.pyqtSignal(bool)
+    resetPoints = QtCore.pyqtSignal()
 
     def __init__(self):
         super(PathFinderModel, self).__init__()
@@ -14,6 +15,10 @@ class PathFinderModel(QtCore.QObject):
 
     def clearScope(self):
         self.clearSquares.emit()
+
+    def clearAll(self):
+        self.clearSquares.emit(False)
+        self.resetPoints.emit()
 
     def dijkstraShortestPath(self, start, end, scope):
         parentDict = {}

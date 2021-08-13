@@ -22,6 +22,9 @@ class PathfinderController(QtCore.QObject):
         self._model.colorChange.connect(self.changeSquareColor)
         self._model.resetPoints.connect(self._view.resetPoints)
 
+        for key, value in self._view.algorithmsChoice.items():
+            value.clicked.connect(partial(self.changeAlgorithm, key))
+
         # connecting squares
         for row in self._view.pathList:
             for square in row:
@@ -119,6 +122,8 @@ class PathfinderController(QtCore.QObject):
                                 (self._view.startI, self._view.startJ),
                                 (self._view.endI, self._view.endJ),
                                 self._view.pathList)
+            else:
+                return
             # buttons resets
             self._view.runCodeButton.setDisabled(True)
             self._view.startPositionButton.setDisabled(True)
@@ -142,3 +147,8 @@ class PathfinderController(QtCore.QObject):
     def clearScope(self):
         worker = Worker(self._model.clearAll)
         self._view.threadPool.start(worker)
+
+    def changeAlgorithm(self, algorithmStr):
+        self._view.algorithmsChoice[self.algorithm].setEnabled(True)
+        self.algorithm = algorithmStr
+        self._view.algorithmsChoice[self.algorithm].setDisabled(True)

@@ -49,6 +49,7 @@ obstacles if you need them and run the code!")
         # Shortest path algorithm's button
         self.firstAlgorithm = QtWidgets.QPushButton(self.algorithms)
         self.firstAlgorithm.setText("Dijkstra\'s Shortest Path")
+        self.firstAlgorithm.setDisabled(True)
         self.algorithmButtonsLayout.addWidget(self.firstAlgorithm, 0, 0)
         # A* algorithm's button
         self.secondAlgorithm = QtWidgets.QPushButton(self.algorithms)
@@ -75,6 +76,16 @@ obstacles if you need them and run the code!")
         self.seventhAlgorithm.setText("Random Walk")
         self.algorithmButtonsLayout.addWidget(self.seventhAlgorithm, 0, 6)
 
+        # mapping algorithm choice buttons
+        self.algorithmsChoice = {
+            'dijkstra': self.firstAlgorithm,
+            'aStar': self.secondAlgorithm,
+            'yen': self.thirdAlgorithm,
+            'allPairs': self.fourthAlgorithm,
+            'singleSource': self.fifthAlgorithm,
+            'spanningTree': self.sixthAlgorithm,
+            'randomWalk': self.seventhAlgorithm
+        }
         # layout for main content
         self.centralLayout = QtWidgets.QHBoxLayout(self)
 
@@ -105,7 +116,7 @@ obstacles if you need them and run the code!")
         # squares' icons QSize instance
         squareIconSize = QtCore.QSize(16, 16)
 
-        # properties for path finding algotihm and program
+        # properties for path finding algorithm and program
         self.actualIcon = "start.png"
         self.startI = -1
         self.endI = -1

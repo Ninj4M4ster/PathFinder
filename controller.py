@@ -122,6 +122,13 @@ class PathfinderController(QtCore.QObject):
                                 (self._view.startI, self._view.startJ),
                                 (self._view.endI, self._view.endJ),
                                 self._view.pathList)
+            elif self.algorithm == 'aStar':
+                worker = Worker(
+                    self._model.aStar,
+                    (self._view.startI, self._view.startJ),
+                    (self._view.endI, self._view.endJ),
+                    self._view.pathList
+                )
             else:
                 return
             # buttons resets

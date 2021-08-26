@@ -57,19 +57,19 @@ obstacles if you need them and run the code!")
         self.algorithmButtonsLayout.addWidget(self.secondAlgorithm, 0, 1)
         # Yen's k-Shortest Paths algorithm's button
         self.thirdAlgorithm = QtWidgets.QPushButton(self.algorithms)
-        self.thirdAlgorithm.setText("Yen\'s k-Shortest Paths")
+        self.thirdAlgorithm.setText("Breadth-first search")
         self.algorithmButtonsLayout.addWidget(self.thirdAlgorithm, 0, 2)
         # All-Pairs Shortest Path algorithm's button
         self.fourthAlgorithm = QtWidgets.QPushButton(self.algorithms)
-        self.fourthAlgorithm.setText("All-Pairs Shortest Path")
+        self.fourthAlgorithm.setText("Depth-first search")
         self.algorithmButtonsLayout.addWidget(self.fourthAlgorithm, 0, 3)
         # Single Source Shortest Path algorithm's button
         self.fifthAlgorithm = QtWidgets.QPushButton(self.algorithms)
-        self.fifthAlgorithm.setText("Single Source Shortest Path")
+        self.fifthAlgorithm.setText("All Pairs Shortest Path")
         self.algorithmButtonsLayout.addWidget(self.fifthAlgorithm, 0, 4)
         # Minimum Spanning Tree algorithm's button
         self.sixthAlgorithm = QtWidgets.QPushButton(self.algorithms)
-        self.sixthAlgorithm.setText("Minimum Spanning Tree")
+        self.sixthAlgorithm.setText("Prim\'s Minimum Spanning Tree")
         self.algorithmButtonsLayout.addWidget(self.sixthAlgorithm, 0, 5)
         # Random Walk algorithm's button
         self.seventhAlgorithm = QtWidgets.QPushButton(self.algorithms)
@@ -80,9 +80,9 @@ obstacles if you need them and run the code!")
         self.algorithmsChoice = {
             'dijkstra': self.firstAlgorithm,
             'aStar': self.secondAlgorithm,
-            'yen': self.thirdAlgorithm,
-            'allPairs': self.fourthAlgorithm,
-            'singleSource': self.fifthAlgorithm,
+            'bfs': self.thirdAlgorithm,
+            'dfs': self.fourthAlgorithm,
+            'apsp': self.fifthAlgorithm,
             'spanningTree': self.sixthAlgorithm,
             'randomWalk': self.seventhAlgorithm
         }

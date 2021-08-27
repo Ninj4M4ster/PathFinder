@@ -12,6 +12,7 @@ class MainWindow(QtWidgets.QWidget):
         self.setGeometry(50, 50, 1600, 900)
         self.setMinimumSize(1600, 900)
         self.setWindowTitle("Path Finding Visualisation")
+        self.setObjectName('window')
 
         # main window layout
         self.container = QtWidgets.QVBoxLayout(self)
@@ -30,8 +31,8 @@ class MainWindow(QtWidgets.QWidget):
         self.descriptionLabel = QtWidgets.QLabel(self)
         self.descriptionLabel.setText("Pick an algorithm from all available. \nSet start and end points, create \
 obstacles if you need them and run the code!")
-        self.descriptionLabel.setMinimumSize(500, 50)
-        self.descriptionLabel.setMaximumSize(500, 50)
+        self.descriptionLabel.setObjectName('descriptionLabel')
+        self.descriptionLabel.setFixedSize(650, 50)
         self.descriptionLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
         # adding description label to main window's layout
         self.container.addWidget(self.descriptionLabel, alignment=Qt.AlignmentFlag.AlignJustify)
@@ -98,8 +99,7 @@ obstacles if you need them and run the code!")
         # field for path finding
         self.centralWidget = QtWidgets.QLabel(self)
         self.centralWidget.setObjectName("central")
-        self.centralWidget.setMinimumSize(1055, 530)
-        self.centralWidget.setMaximumSize(1055, 530)
+        self.centralWidget.setFixedSize(1055, 530)
         self.pathfinderLayout.addWidget(self.centralWidget)
         # settings for path finding
         self._createSettingsWidget()
@@ -171,16 +171,19 @@ obstacles if you need them and run the code!")
 
         # stylesheet
         stylesheetstr = """
+            #window{
+                background-color:#292028;
+            }
             #settings{
                 background-color:yellow;
             }
-            QLabel{
-                background-color: red;
-            }
             #titleLabel{
-                position:relative;
-                right:100px;
                 font-size:40px;
+                color:#dbdbdb;
+            }
+            #descriptionLabel{
+                font-size:18px;
+                color:#dbdbdb;
             }
             #central{
                 background-color:grey;
@@ -204,7 +207,7 @@ obstacles if you need them and run the code!")
     def _createSettingsWidget(self):
         # settings container
         self.settingsLabel = QtWidgets.QLabel(self)
-        self.settingsLabel.setAccessibleName('settings')
+        self.settingsLabel.setObjectName('settings')
         self.settingsLabel.setFixedSize(1055, 40)
         self.pathfinderLayout.addWidget(self.settingsLabel)
 
@@ -226,6 +229,7 @@ class Square(QtWidgets.QPushButton):
         self.setFixedSize(18, 18)
         self.setObjectName(f"square-{i}-{j}")
         self.setAccessibleName('')
+
 
     def changeToWhite(self, leaveBlack):
         if self.styleSheet() != 'background-color:black;' and leaveBlack:

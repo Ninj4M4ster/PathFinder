@@ -116,6 +116,9 @@ class PathfinderController(QtCore.QObject):
             worker.signals.finished.connect(self.runCode)
             self._view.threadPool.start(worker)
         else:
+            # check if start and end are places on scope
+            if self._view.startI == -1 or self._view.endI == -1:
+                return
             # choose algorithm and pass it to worker class
             if self.algorithm == 'dijkstra':
                 worker = Worker(self._model.dijkstraShortestPath,

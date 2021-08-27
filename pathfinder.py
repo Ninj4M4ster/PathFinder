@@ -100,6 +100,7 @@ obstacles if you need them and run the code!")
         self.centralWidget = QtWidgets.QLabel(self)
         self.centralWidget.setObjectName("central")
         self.centralWidget.setFixedSize(1055, 530)
+        self._addShadow(self.centralWidget)
         self.pathfinderLayout.addWidget(self.centralWidget)
         # settings for path finding
         self._createSettingsWidget()
@@ -107,6 +108,7 @@ obstacles if you need them and run the code!")
         self.centralLayout.addWidget(self.pathfinderLabel)
         # label for options used with path finding
         self.optionsLabel = QtWidgets.QLabel(self)
+        self.optionsLabel.setObjectName('options')
         self.optionsLabel.setFixedSize(300, 530)
         # layout for options
         self.optionsLayout = QtWidgets.QVBoxLayout(self.optionsLabel)
@@ -133,6 +135,7 @@ obstacles if you need them and run the code!")
         self.startPositionButton.setIcon(startPositionIcon)
         self.startPositionButton.setIconSize(buttonIconSize)
         self.startPositionButton.setDisabled(True)
+        self._addShadow(self.startPositionButton)
         self.optionsLayout.addWidget(self.startPositionButton)
         # end position button
         self.endPositionButton = QtWidgets.QPushButton(self)
@@ -141,16 +144,19 @@ obstacles if you need them and run the code!")
         endPositionIcon = QtGui.QIcon("end.png")
         self.endPositionButton.setIcon(endPositionIcon)
         self.endPositionButton.setIconSize(buttonIconSize)
+        self._addShadow(self.endPositionButton)
         self.optionsLayout.addWidget(self.endPositionButton)
         # wall button
         self.wallButton = QtWidgets.QPushButton(self)
         self.wallButton.setFixedSize(200, 40)
         self.wallButton.setText("Wall")
+        self._addShadow(self.wallButton)
         self.optionsLayout.addWidget(self.wallButton)
         # code starting button
         self.runCodeButton = QtWidgets.QPushButton(self)
         self.runCodeButton.setFixedSize(200, 40)
         self.runCodeButton.setText("Run code")
+        self._addShadow(self.runCodeButton)
         self.optionsLayout.addWidget(self.runCodeButton)
 
         # add options label to main content's layout
@@ -175,7 +181,7 @@ obstacles if you need them and run the code!")
                 background-color:#292028;
             }
             #settings{
-                background-color:yellow;
+                background-color:transparent;
             }
             #titleLabel{
                 font-size:40px;
@@ -197,6 +203,12 @@ obstacles if you need them and run the code!")
             QLabel#central QPushButton:hover{
                 border: 1px solid lightblue;
             }
+            #options QPushButton{
+                background-color:#d1c0d1;
+                border-radius: 10px;
+                border:2px solid #700370;
+                font-size: 20px;
+            }
             
         """
         self.setStyleSheet(stylesheetstr)
@@ -215,12 +227,20 @@ obstacles if you need them and run the code!")
         self.clearButton.setFixedSize(150, 40)
         self.clearButton.setText("Clear all")
 
+    def _addShadow(self, widget):
+        shadow = QtWidgets.QGraphicsDropShadowEffect()
+        shadow.setBlurRadius(5)
+        shadow.setXOffset(3)
+        shadow.setYOffset(3)
+        shadow.setColor(QtGui.QColor('#000000'))
+        widget.setGraphicsEffect(shadow)
     def resetPoints(self):
         self.scopeToClear = False
         self.startI = -1
         self.startJ = -1
         self.endI = -1
         self.endJ = -1
+
 
 # square class
 class Square(QtWidgets.QPushButton):

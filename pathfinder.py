@@ -28,7 +28,7 @@ class MainWindow(QtWidgets.QWidget):
 
         # description label
         self.descriptionLabel = QtWidgets.QLabel(self)
-        self.descriptionLabel.setText("Pick an algorithm from all available. \nSet start and end points, create\
+        self.descriptionLabel.setText("Pick an algorithm from all available. \nSet start and end points, create \
 obstacles if you need them and run the code!")
         self.descriptionLabel.setMinimumSize(500, 50)
         self.descriptionLabel.setMaximumSize(500, 50)
@@ -164,7 +164,7 @@ obstacles if you need them and run the code!")
             tmpList = []
             for j in range(50):
                 square = Square(self.centralWidget, i, j)
-                square.move(j*21 + 3, i*21 + 3)
+                square.move(j*21 + 4, i*21 + 4)
                 square.setIconSize(squareIconSize)
                 tmpList.append(square)
             self.pathList.append(tmpList)
@@ -189,10 +189,10 @@ obstacles if you need them and run the code!")
             }
             QLabel#central QPushButton{
                 background-color:white;
-                transition: 0.5s;
-                border: 1px solid grey;
                 border-radius:2px;
-                widget-animation-duration: 100;
+            }
+            QLabel#central QPushButton:hover{
+                border: 1px solid lightblue;
             }
             
         """
@@ -223,7 +223,7 @@ obstacles if you need them and run the code!")
 class Square(QtWidgets.QPushButton):
     def __init__(self, parent, i, j):
         super(Square, self).__init__(parent)
-        self.setFixedSize(20, 20)
+        self.setFixedSize(18, 18)
         self.setObjectName(f"square-{i}-{j}")
         self.setAccessibleName('')
 

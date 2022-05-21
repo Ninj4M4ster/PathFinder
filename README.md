@@ -18,5 +18,5 @@ Python GUI app built with PyQT 6 to visualise path finding algorithms.
   7. Run `pip install pyqt6`.
  
 # Starting
-After installation, open CMD in project folder. Then run `py pathfinder.py`.
+After installation, open CMD in project folder. Then run `py pathfinder.py`.  
 Choose starting point, ending point, obstacles, algorithm you want to visualise and click "Run Code".

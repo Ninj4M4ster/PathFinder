@@ -10,7 +10,7 @@ Python GUI app built with PyQT 6 to visualise path finding algorithms.
 # Installation
 ### Windows:
   1. Install [Git](https://git-scm.com/download/win),
-  2. Clone the repo using `git clone https://github.com/Ninj4M4ster/PathFinder`,
+  2. Open CMD in chosen directory and clone the repo using `git clone https://github.com/Ninj4M4ster/PathFinder`,
   3. Install latest version of [Python](https://www.python.org/downloads/),
   4. During installation, check the option to add Python to PATH,
   5. Choose default installation option,
